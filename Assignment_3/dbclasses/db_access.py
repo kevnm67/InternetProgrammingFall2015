@@ -61,6 +61,9 @@ def get_categories_for_area(area_id):
     Return a list of rows from the category table that all contain the given area.
     """
     results = do_command('SELECT * FROM category_area WHERE area_id is?',[area_id])
+    if not results:
+        return None
+    else:
+        return do_command('SELECT * FROM category WHERE category_id is?',[results[0]['category_id']])
 
-    return do_command('SELECT * FROM category WHERE category_id is?',[results[0]['category_id']])
-
+print(get_categories_for_area(3))
