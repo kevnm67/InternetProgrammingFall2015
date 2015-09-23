@@ -3,8 +3,9 @@ __author__ = 'KevinMortonMacPro'
 import db_access
 import db_utility
 
-# ------------------------------------| Formatting |----------------------------------------------
 areas = db_access.get_all_areas()
+
+# Formatting
 template = "{:>5}   {:20} {:<20} {:.5}  {:<20}  "
 row = template.format("ID", "Area Name", "# of locations", "Avg Value", "Category")
 print(row)
@@ -39,7 +40,7 @@ for area in areas:
     if not db_utility.get_average_measurements_for_area(area_id):
         avgMeasurementString = '--------'
         
-    # --| Final output | --
+    # Final output
     row = template.format(area_id, area['name'], len(area_location), avgMeasurementString,getCategoryString(area_category))
     
     print(row)
