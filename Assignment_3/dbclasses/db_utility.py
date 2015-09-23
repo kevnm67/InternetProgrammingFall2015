@@ -40,12 +40,3 @@ def printLocationsWithMeasurements(allLocation,allMeasurements):
     print('\nlocations\n')
     for i in allMeasurements:
         print(i,'\n')
-############################################################
-
-
-avg = get_average_measurements_for_area(7)
-print('avg calc:\t',avg,'\n')
-print('-'*10,'\nexpected:\t 61.77813528637446 ')
-
-
-#print(printLocationsWithMeasurements(allLocation, allMeasurements))

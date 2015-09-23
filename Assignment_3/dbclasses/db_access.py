@@ -41,26 +41,29 @@ def get_all_areas():
     """
     return do_command('SELECT * FROM area')
 
-#################################################### 
 def get_locations_for_area(area_id):
     """
     Return a list of dictionaries giving the locations for the given area.
     """
     return do_command('SELECT * FROM location WHERE location_area is?',[area_id])
 
-#################################################### 
 def get_measurements_for_location(location_id):
     """
     Return a list of dictionaries giving the measurement rows for the given location.
     """
     return do_command('SELECT * FROM measurement WHERE measurement_location is ?',[location_id])
 
-#################################################### 
 def get_categories_for_area(area_id):
     """
     Return a list of rows from the category table that all contain the given area.
     """
     results = do_command('SELECT * FROM category_area WHERE area_id is?',[area_id])
-
-    return do_command('SELECT * FROM category WHERE category_id is?',[results[0]['category_id']])
-
+    
+    if not results:
+        return None
+    else:
+        finalList = []
+        for i in range(len(results)):
+            newResults = do_command('SELECT * FROM category WHERE category_id is?',[results[i]['category_id']])
+            finalList.append(newResults[0])
+        return finalList
