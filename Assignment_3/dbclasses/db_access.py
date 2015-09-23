@@ -62,7 +62,6 @@ def get_categories_for_area(area_id):
     """
     results = do_command('SELECT * FROM category_area WHERE area_id is?',[area_id])
     
-    
     if not results:
         return None
     else:
@@ -70,48 +69,6 @@ def get_categories_for_area(area_id):
         for i in range(len(results)):
             newResults = do_command('SELECT * FROM category WHERE category_id is?',[results[i]['category_id']])
             finalList.append(newResults[0])
-            
-#            print(newResults)
-       
-#        print('\n','-'*22,len(newResults),'-'*33)
-#        for i in do_command('SELECT * FROM category WHERE category_id is?',[results[0]['category_id']]):
-#            finalList.append(i)
-                
         return finalList
-
-######################################################################################################## 
-#################################################### EXTRA Functions
-######################################################################################################## 
-#def get_categories_for_areaL(area_id):
-    
-def get_categoryID_fromAreaID(area_id):
-    results = do_command('SELECT * FROM category_area WHERE area_id is?',[area_id])
-    if not results:
-        return None
-    else:
-        return results
-        
-def getListOfCatagoryNames(area_id):
-    invent = get_categoryID_fromAreaID(area_id)
-    categoryCount = 0
-    catList = []
-    
-    for inv in invent:
-        rnt = do_command('SELECT * FROM category WHERE category_id is?',[inv['category_id']])
-#        print(rnt)
-        
-        categoryCount += rnt[0]['category_id']
-        catList.append(rnt)
-    
-    return catList
-
-#print(get_categories_for_area(5))
-
-#count = 8
-#while count > 0:
-##    print(count,'\n')
-#    print(get_categories_for_area(count))
-#    count += -1
-
 
 print(get_categories_for_area(3))
