@@ -67,3 +67,10 @@ def get_categories_for_area(area_id):
             newResults = do_command('SELECT * FROM category WHERE category_id is?',[results[i]['category_id']])
             finalList.append(newResults[0])
         return finalList
+
+def get_all_measurements():
+        """
+        Returns a list of dictionaries representing all the rows in the
+        area table.
+        """
+        return do_command('SELECT * FROM measurement')

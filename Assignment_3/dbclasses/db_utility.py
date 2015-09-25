@@ -31,12 +31,4 @@ def number_of_locations_by_area(area_id):
     Returns the number of locations for the given area.
     """
     return len(db_access.get_locations_for_area(area_id))
-  
-
-#################### Tempory - delete me ####################   
-def printLocationsWithMeasurements(allLocation,allMeasurements):
-    for i in allLocation:
-        print(i,'\n')
-    print('\nlocations\n')
-    for i in allMeasurements:
-        print(i,'\n')
+ 

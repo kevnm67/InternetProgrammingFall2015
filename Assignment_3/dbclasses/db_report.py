@@ -27,7 +27,7 @@ def getCategoryString(aList):
                  categoryString += ', '
                  countString += -1
     except TypeError:
-        categoryString = 'None'
+        categoryString = ''
     return categoryString
 
 # ------------------------------------| Pretty Print |----------------------------------------------
