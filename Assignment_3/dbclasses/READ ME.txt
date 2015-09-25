@@ -1,0 +1,3 @@
+The script graphResults uses matplotlib (link below). I just made it for fun and wasn't sure if you wanted an additional script or the report was enough.
+
+http://matplotlib.org/faq/installing_faq.html#easy-install
