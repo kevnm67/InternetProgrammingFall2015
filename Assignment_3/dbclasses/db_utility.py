@@ -31,4 +31,8 @@ def number_of_locations_by_area(area_id):
     Returns the number of locations for the given area.
     """
     return len(db_access.get_locations_for_area(area_id))
- 
+
+
+if __name__ == '__main__': main()
+
+
