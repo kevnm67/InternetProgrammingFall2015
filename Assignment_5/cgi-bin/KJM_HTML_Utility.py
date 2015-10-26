@@ -9,7 +9,7 @@ def writeHTMLFile(aList):
 	f = open('helloworld.html','w')
 	
 	for i in aList:
-		f.write(i)
+		f.write(str(i))
 		
 	f.close()
 
@@ -93,6 +93,31 @@ def createTableFromStringWithSymbol(aString,symbol):
 #	return replaceSymbolWithTag(aString, symbol, "")
 
 
+def createTableFromList(list):
+#	<tr>
+#		<td>Rheumatoid Arthritis</td>
+#		<td>Autoimmune</td>
+#		<td>Joints of the </td>
+#	  </tr>
+	tableList = []
+	tableTag = "<table>"
+	
+	#Start of new complete row
+	tableRowTag = "<tr>"
+	tableTitleItemTag = "\t<th>"
+	
+	#new normal row item 
+	tableRowItemTag = "\t<th>"
+	
+	
+	for i in list:
+#		print((str(i)))
+		tableList.append("<th>" + str(i) + "</th>" + "\n")
+	
+		
+	print(tableList)
+	return tableList
+
 # ------------------------------------| Open in browser |---------------------------------------------- #
 def browserOpenPage(webpagePath):
 	#File path of HTML file to open in webbrowser
@@ -113,4 +138,4 @@ def testHTMLcreation():
 	browserOpenPage("")
 	
 	
-testHTMLcreation()
+#testHTMLcreation()

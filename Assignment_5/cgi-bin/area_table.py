@@ -2,6 +2,7 @@ __author__ = 'KevinMortonMacPro'
 
 import db_access
 import db_utility
+import KJM_HTML_Utility
 
 areas = db_access.get_all_areas()
 
@@ -47,7 +48,23 @@ def createTable():
 		<th>Category</th>
 	  </tr>
 				""");
+	print(tableHeaderRowString)
+	return tableHeaderRowString
 	
+#def parseRowData():
+#	for area in areas:
+#		area_id = area['area_id']
+#		area_location = db_access.get_locations_for_area(area_id)
+#		area_category = db_access.get_categories_for_area(area_id)
+#		avgMeasurementString = str( db_utility.get_average_measurements_for_area(area_id))
+#
+#		if not db_utility.get_average_measurements_for_area(area_id):
+#			avgMeasurementString = '--------'
+#
+#		rowList = [area_id, area['name'], len(area_location), avgMeasurementString,getCategoryString(area_category)]
+#		
+#		return rowList
+#print(parseRowData())
 
 # ------------------------------------| Pretty Print |----------------------------------------------
 for area in areas:
@@ -59,7 +76,13 @@ for area in areas:
 	if not db_utility.get_average_measurements_for_area(area_id):
 		avgMeasurementString = '--------'
 
-	# Final output
-	row = template.format(area_id, area['name'], len(area_location), avgMeasurementString,getCategoryString(area_category))
+	rowList = [area_id, area['name'], len(area_location), avgMeasurementString,getCategoryString(area_category)]
 
-	print(row)
+	allRows = KJM_HTML_Utility.createTableFromList(rowList)
+	
+	for i in allRows:
+		KJM_HTML_Utility.writeHTMLFile(str(i))
+	
+	myList = [KJM_HTML_Utility.writeHTMLHeader("Kevins Website"),"<body>\n\n",KJM_HTML_Utility.createTableFromList(rowList),"\n\n</body>\n"]
+	
+#	KJM_HTML_Utility.writeHTMLFile(myList)	
