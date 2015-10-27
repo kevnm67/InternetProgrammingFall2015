@@ -1,8 +1,13 @@
+#!/usr/bin/python3
+
 __author__ = 'KevinMortonMacPro'
 
 import db_access
 import db_utility
 import KJM_HTML_Utility
+#import cgi
+#import cgitb
+#cgitb.enable()
 
 areas = db_access.get_all_areas()
 
@@ -10,36 +15,32 @@ areas = db_access.get_all_areas()
 # Main difference = the table is presented using an HTML table so column widths will not be a problem.
 # However, make sure to limit the number of decimal places displayed in the average measurement.
 
-# Formatting
-template = "{:>5}   {:20} {:<20} {:.5}  {:<20}  "
-row = template.format("ID", "Area Name", "# of locations", "Avg Value", "Category")
-print(row)
-
 # ------------------------------------| Formatting functions |------------------------------------
 def getCategoryString(aList):
-	# Pass a list of categories to get a formatted comma separated string    
-	categoryString = ''
-	theCategory = []
+    # Pass a list of categories to get a formatted comma separated string
+    categoryString = ''
+    theCategory = []
 
-	try:
-		for i in aList:
-		   theCategory.append(i['name'])
-		countString = len(area_category)
+    try:
+        for i in aList:
+            theCategory.append(i['name'])
+        countString = len(area_category)
 
-		for i in theCategory:
-			categoryString += i
-			if countString > 1:
-				 categoryString += ', '
-				 countString += -1
-	except TypeError:
-		categoryString = ''
-	return categoryString
+        for i in theCategory:
+            categoryString += i
+            if countString > 1:
+                categoryString += ', '
+                countString += -1
+    except TypeError:
+        categoryString = ''
+    return categoryString
 
 # ------------------------------------| Assignment 5 |----------------------------------------------
-def createTable():
-	#<table class="grid">
-	tableHeaderRowString = ( u""" 
+def getTableHeaderRow():
+    # <table class="grid">
+    tableHeaderRowString = (u"""
 	<table class="grid">
+    <thead>
 	<tr>
 		<th>ID</th>
 		<th>Area Name</th>
@@ -47,42 +48,29 @@ def createTable():
 		<th>Avg Value</th>
 		<th>Category</th>
 	  </tr>
+      </thead>
+        
+       <tbody>
 				""");
-	print(tableHeaderRowString)
-	return tableHeaderRowString
-	
-#def parseRowData():
-#	for area in areas:
-#		area_id = area['area_id']
-#		area_location = db_access.get_locations_for_area(area_id)
-#		area_category = db_access.get_categories_for_area(area_id)
-#		avgMeasurementString = str( db_utility.get_average_measurements_for_area(area_id))
-#
-#		if not db_utility.get_average_measurements_for_area(area_id):
-#			avgMeasurementString = '--------'
-#
-#		rowList = [area_id, area['name'], len(area_location), avgMeasurementString,getCategoryString(area_category)]
-#		
-#		return rowList
-#print(parseRowData())
+    return tableHeaderRowString
+
+print(getTableHeaderRow())
 
 # ------------------------------------| Pretty Print |----------------------------------------------
 for area in areas:
-	area_id = area['area_id']
-	area_location = db_access.get_locations_for_area(area_id)
-	area_category = db_access.get_categories_for_area(area_id)
-	avgMeasurementString = str( db_utility.get_average_measurements_for_area(area_id))
+    
+    area_id = area['area_id']
+    area_location = db_access.get_locations_for_area(area_id)
+    area_category = db_access.get_categories_for_area(area_id)
+    avgMeasurementString = str(db_utility.get_average_measurements_for_area(area_id))
 
-	if not db_utility.get_average_measurements_for_area(area_id):
-		avgMeasurementString = '--------'
+    if not db_utility.get_average_measurements_for_area(area_id):
+        avgMeasurementString = '--------'
 
-	rowList = [area_id, area['name'], len(area_location), avgMeasurementString,getCategoryString(area_category)]
+    rowList = [area_id, area['name'], len(area_location), avgMeasurementString[1:5], getCategoryString(area_category)]
 
-	allRows = KJM_HTML_Utility.createTableFromList(rowList)
-	
-	for i in allRows:
-		KJM_HTML_Utility.writeHTMLFile(str(i))
-	
-	myList = [KJM_HTML_Utility.writeHTMLHeader("Kevins Website"),"<body>\n\n",KJM_HTML_Utility.createTableFromList(rowList),"\n\n</body>\n"]
-	
-#	KJM_HTML_Utility.writeHTMLFile(myList)	
+    for i in KJM_HTML_Utility.createTableFromList(rowList):
+        print(i)
+    
+print("</tbody>")
+print("</table>")

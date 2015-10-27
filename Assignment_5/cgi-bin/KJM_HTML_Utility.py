@@ -1,141 +1,86 @@
-#!/usr/bin/python
+#!/usr/bin/python3
+
 __author__ = 'KevinMortonMacPro'
 
 import webbrowser
 
-
 # ------------------------------------| HTML FILE CREATION |---------------------------------------------- #
 def writeHTMLFile(aList):
 	f = open('helloworld.html','w')
-	
 	for i in aList:
 		f.write(str(i))
-		
 	f.close()
 
-def writeHTMLHeader(headerTitle):
-	#Creates the top of the HTML file with an "about" section for notes
+# ------------------------------------| HTML FILE CREATION |---------------------------------------------- #
+def cgiHeader():
+	print("Content-Type: text/html")
 
-	readMeText = "<!-- \n\tKevin Morton\n\tInternet Programming\n\tAssignment 5\n-->\n\n"
-	
-	htmlStartTag = '''<!DOCTYPE html>
+def documentTitleForAssignment(assignmentNumber):
+	return "\n<!-- \n\tKevin Morton\n\tInternet Programming\n\tAssignment" + str(assignmentNumber) + "\n-->\n\n"
+
+def htmlHeader(headerTitle):
+	htmlStartTag = '''
+<!DOCTYPE html>
 	<html lang="en">
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 		<link rel="stylesheet" type="text/css" href="Style1.css">
 	'''
-	
 	theTitle = "<title>" + headerTitle + "</title>\n</head>\n\n"
-	
-	return readMeText + htmlStartTag + theTitle
+
+	return "Content-Type: text/html; charset=UTF-8\n\n" + documentTitleForAssignment("5 ") + htmlStartTag + theTitle
 
 # ------------------------------------| TAG CREATION |---------------------------------------------- #
 def countSymbol(symbol,theString):
-	# Count the number of occurrences the delimiter is found in the string
+	'''Count the number of occurrences the delimiter is found in the string'''
 	theCount = 0
-	
+
 	for i in theString:
 		if i == symbol:
 			theCount+=1
-	
 	return theCount
-
 
 def replaceSymbolWithTag(aString,symbol,tag):
 	#Replace % with proper HTML tags. Even % will be replaced with <html> and odd with </html>
-	
 	stringCount = countSymbol(symbol,aString)
 	closingTag = str(tag).replace("<", "</")
-	
+
 	for i in aString:
-		
 		if i == symbol:
-			
 			if stringCount % 2 == 0:
-				
 				#replace even occurences with opening tag
 				aString = aString.replace(symbol,tag,1)
-			
 			else:
-				
 				#replace odd occurences with closing tag
 				aString = aString.replace(symbol,closingTag,1)
-		
 			stringCount-=1
-	
 	return aString
-
-def createTableFromStringWithSymbol(aString,symbol):
-#	<tr>
-#		<td>Rheumatoid Arthritis</td>
-#		<td>Autoimmune</td>
-#		<td>Joints of the </td>
-#	  </tr>
-
-	tableTag = "<table>"
-	
-	#Start of new complete row
-	tableRowTag = "<tr>"
-	
-	tableTitleItemTag = "\t<th>"
-	
-	#new normal row item 
-	tableRowItemTag = "\t<th>"
-	tableList = []
-	
-	if str(aString).startswith("t_"):
-		
-		#replace t_ with tags for the title of a header column
-		
-		tableList.append(str(aString).replace("t_", "<th>") + "</th>")
-		
-	
-#	return replaceSymbolWithTag(aString, symbol, "")
-
-
+					
 def createTableFromList(list):
-#	<tr>
-#		<td>Rheumatoid Arthritis</td>
-#		<td>Autoimmune</td>
-#		<td>Joints of the </td>
-#	  </tr>
 	tableList = []
-	tableTag = "<table>"
-	
-	#Start of new complete row
-	tableRowTag = "<tr>"
-	tableTitleItemTag = "\t<th>"
-	
-	#new normal row item 
-	tableRowItemTag = "\t<th>"
-	
+	tableHeaderRowString = (u"""
+	<tr>
+					""");
+	tableList.append(tableHeaderRowString)
 	
 	for i in list:
-#		print((str(i)))
-		tableList.append("<th>" + str(i) + "</th>" + "\n")
+		tableList.append("\t\t<td>" + str(i) + "</td>")
+	tableList.append("</tr>")
 	
-		
-	print(tableList)
 	return tableList
 
 # ------------------------------------| Open in browser |---------------------------------------------- #
 def browserOpenPage(webpagePath):
 	#File path of HTML file to open in webbrowser
-	
 	webpagePath = 'file:///Users/KevinMortonMacPro/Documents/KSU_Programming_Projects/InternetProgrammingAssignments/Assignment_5/' + 'helloworld.html'
-	
 	webbrowser.open_new_tab(webpagePath)
 
-
 # ------------------------------------| TEST |---------------------------------------------- #
-
 def testHTMLcreation():
-	
-	myList = [writeHTMLHeader("Kevins Website"),"<body>\n\n",replaceSymbolWithTag("$kevin$ $goes$ $to$ $store$", "$", "<br>"),"\n\n</body>\n"]
-	
+	testHeader = htmlHeader("Kevins Website")
+	myList = [testHeader,"<body>\n\n",replaceSymbolWithTag("$kevin$ $goes$ $to$ $store$", "$", "<br>"),"\n\n</body>\n"]
 	writeHTMLFile(myList)
-	
+
 	browserOpenPage("")
-	
-	
+
 #testHTMLcreation()
