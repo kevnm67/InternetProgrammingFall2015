@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/python
 
 __author__ = 'KevinMortonMacPro'
 
@@ -42,13 +42,11 @@ def do_command(cmd, args=[]):
     finally:
         conn.close()
 
-
 # ------------------------------------| DB Functions |----------------------------------------------
 def get_all_areas():
     '''
     :return: list of dictionaries representing all the rows in the area table.
     '''
-
     return do_command('SELECT * FROM area')
 
 
@@ -100,9 +98,6 @@ def get_location_by_id(location_id):
     This should never have more than 1 element. 
     The list may be empty if location_id is not used by a location entity.
 
-    This makes a total of 6 data access functions in db_access. 
-    Please restrict yourself to using those, it will make your code easier to follow.
     '''
-    
     return do_command('SELECT * FROM location WHERE location_id is ?', [location_id])
 

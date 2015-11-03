@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/python
 
 __author__ = 'KevinMortonMacPro'
 
@@ -35,6 +35,25 @@ def number_of_locations_by_area(area_id):
     return len(db_access.get_locations_for_area(area_id))
 
 
+def get_average_measurement_for_location(location_id):
+
+    crs_two = db_access.get_location_by_id(location_id)    
+    averageValue = 0.0
+    total = 0.0
+    item = 0.0
+    
+    measurementsForSelectedLocation = db_access.get_measurements_for_location(location_id)
+    
+    for i in measurementsForSelectedLocation:
+        total += float(i['value'])
+        item +=1
+    
+    if item == 0:
+        return None
+    else:
+        averageValue = total/item
+        return averageValue
+        
 if __name__ == '__main__': main()
 
 

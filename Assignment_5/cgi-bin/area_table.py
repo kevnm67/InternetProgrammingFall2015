@@ -1,13 +1,14 @@
-#!/usr/bin/python3
+#!/usr/bin/python
+
 
 __author__ = 'KevinMortonMacPro'
 
 import db_access
 import db_utility
 import KJM_HTML_Utility
-#import cgi
-#import cgitb
-#cgitb.enable()
+import cgi
+import cgitb
+cgitb.enable()
 
 areas = db_access.get_all_areas()
 
@@ -54,9 +55,12 @@ def getTableHeaderRow():
 				""");
     return tableHeaderRowString
 
-print(getTableHeaderRow())
+
 
 # ------------------------------------| Pretty Print |----------------------------------------------
+print(KJM_HTML_Utility.htmlHeader("Area Table"))
+print(getTableHeaderRow())
+
 for area in areas:
     
     area_id = area['area_id']

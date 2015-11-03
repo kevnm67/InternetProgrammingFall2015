@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/python
 
 __author__ = 'KevinMortonMacPro'
 
@@ -13,14 +13,13 @@ areas = db_access.get_all_areas()
 # sending the id of the selected area to the script using the name area_id.
 
 def printDocuementStart():
+    areaList = []
+    areaIDList = []
+    for area in areas:
+        areaList.append(area['name'])
+        areaIDList.append("<option value=" + str(area['area_id']) + ">" + area['name'] + "</option>")
 
-	areaList = []
-	areaIDList = []
-	for area in areas:
-		areaList.append(area['name'])	
-		areaIDList.append("<option value=" + str(area['area_id']) + ">" + area['name'] + "</option>")
-
-	documentStart = """
+    documentStart = """
 		<html>
 			<head>
 				<meta charset="UTF-8">
@@ -32,7 +31,7 @@ def printDocuementStart():
 				<select name="area_id" size="10" multiple>
 		"""
 
-	listEnding = """
+    listEnding = """
 	</select>
 		<div style="text-align: center;">
 	<input type="submit" value="Submit" />   
@@ -41,21 +40,13 @@ def printDocuementStart():
 	</body>
 	</html>
 	"""
-	print(KJM_HTML_Utility.htmlHeader("Select an Area"))
-	
-	print(documentStart)
-	for i in areaIDList:
-		print("\t" + i)
-	print(listEnding)
-	
-	documentEnding = """
-	</body>
-	</html>
-	"""
-	
-	#http://localhost:8080/cgi-bin/location_table.py?area_id=
-#send the selected id to the script ->  cause Script location_table.py to be executed, sending the id of the selected area to the script using the name area_id.
+    print(KJM_HTML_Utility.htmlHeader("Select an Area"))
+
+    print(documentStart)
+
+    for i in areaIDList:
+        print("\t" + i)
+    print(listEnding)
+
 
 printDocuementStart()
-
-#http://localhost:8080/cgi-bin/function_table.py?start=1&end=10&numrows=11&function=square&function=log2
