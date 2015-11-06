@@ -1,0 +1,54 @@
+
+html {
+	background-color: #4682b4;
+}
+
+body {
+	margin-left: 15%;
+	width: 70%;
+	color: #000080;
+}
+
+
+table td, table, table th {
+    border-style: solid;
+    border-collapse: collapse;
+    border-width: 2px;
+    padding: 5px;
+}
+
+div.tab-layout {
+    display: table;
+}
+
+div.tab-layout > div {
+    display: table-row;
+}
+
+div.tab-layout > div > span {
+    display: table-cell;
+    padding-left: 10px;
+}
+
+div.tab-layout span, div.tab-layout span, div.tab-layout {
+    border-style: solid;
+    border-collapse: collapse;
+    border-width: 2px;
+    padding: 5px;
+}
+
+#value-area {
+    width: 45%;
+    float: left;
+  	background-color: #F0F8FF;
+    padding: 0px 10px 10px 10px;
+
+}
+
+#stat-area {
+    width: 45%;
+    float: right;
+    background-color: #F0F8FF;
+    padding: 0px 10px 10px 10px;
+}
+
