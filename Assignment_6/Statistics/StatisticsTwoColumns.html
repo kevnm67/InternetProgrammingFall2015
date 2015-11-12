@@ -1,208 +1,244 @@
 <!DOCTYPE HTML>
 <html>
-
 <head>
-	<title>Statistics</title>
-	<link type="text/css" rel="stylesheet" href="style1.css" />
-	<meta charset="utf-8">
-	<script>
-		function setup() {
-			//alert("setting up");
-			var addElementButton = document.getElementById("addElement");
-			addElementButton.addEventListener("click", addValue, false);
+  <title>Statistics</title>
+  <link type="text/css" rel="stylesheet" href="style1.css" />
+  <meta charset="utf-8">
+  <script>
+    function setup() {
 
-			var computeButton = document.getElementById("compute");
-			computeButton.addEventListener("click", computeStatistics, false);
+      var addElementButton = document.getElementById("addElement");
+      addElementButton.addEventListener("click", addValue, false);
 
-			var removeElementButton = document.getElementById("removeElement");
-			removeElementButton.addEventListener("click", removeValue, false);
-		}
+      var computeButton = document.getElementById("compute");
+      computeButton.addEventListener("click", computeStatistics, false);
 
-		function addValue() {
+      var removeElementButton = document.getElementById("removeElement");
+      removeElementButton.addEventListener("click", removeValue, false);
+    }
 
-			// Function to create rows in the values table
-			var tbody = document.getElementById("values");
-			var lastNum = tbody.lastElementChild.firstElementChild.textContent;
-			var nextNum = +lastNum + 1;
-			var newRow = document.createElement("tr");
-			var numCell = document.createElement("td");
-			var valCell = document.createElement("td");
-			var numText = document.createTextNode(nextNum + "");
-			numCell.appendChild(numText);
+    function addValue() {
 
-			// Create the X value field and add to its respective column
-			var input = document.createElement("input");
-			input.setAttribute("name", "xvalue");
-			input.setAttribute("type", "text");
-			valCell.appendChild(input);
+      // Function to create rows in the values table
+      var tbody = document.getElementById("values");
+      var lastNum = tbody.lastElementChild.firstElementChild.textContent;
+      var nextNum = +lastNum + 1;
+      var newRow = document.createElement("tr");
+      var numCell = document.createElement("td");
+      var valCell = document.createElement("td");
+      var numText = document.createTextNode(nextNum + "");
+      numCell.appendChild(numText);
 
-			// Create a value field for the Y value + add to respective column
-			var yValCell = document.createElement("td");
-			var yInput = document.createElement("input");
-			yInput.setAttribute("name", "yvalue");
-			yInput.setAttribute("type", "text");
+      // Create the X value field and add to its respective column
+      var input = document.createElement("input");
+      input.setAttribute("name", "xvalue");
+      input.setAttribute("type", "text");
+      valCell.appendChild(input);
 
-			// Add the y-value field to its respective column
-			yValCell.appendChild(yInput);
-			newRow.appendChild(numCell);
-			newRow.appendChild(valCell);
-			newRow.appendChild(yValCell);
-			tbody.appendChild(newRow);
-		}
+      // Create a value field for the Y value + add to respective column
+      var yValCell = document.createElement("td");
+      var yInput = document.createElement("input");
+      yInput.setAttribute("name", "yvalue");
+      yInput.setAttribute("type", "text");
 
-		function removeValue() {
-			var tbody = document.getElementById("values");
+      // Add the y-value field to its respective column
+      yValCell.appendChild(yInput);
+      newRow.appendChild(numCell);
+      newRow.appendChild(valCell);
+      newRow.appendChild(yValCell);
+      tbody.appendChild(newRow);
+    }
 
-			if (tbody.childElementCount > 1) {
-				// leave at least one value  row
-				tbody.removeChild(tbody.lastElementChild);
-			}
-		}
+    function removeValue() {
+      var tbody = document.getElementById("values");
 
-		function removeChildForElement(elementID) {
-			var theSpan = document.getElementById(elementID);
-			if (theSpan.lastChild) {
-				theSpan.removeChild(theSpan.lastChild);
-			}
+      if (tbody.childElementCount > 1) {
+        // leave at least one value  row
+        tbody.removeChild(tbody.lastElementChild);
+      }
+    }
 
-			return theSpan;
-		}
+    function removeChildForElement(elementID) {
+      var theSpan = document.getElementById(elementID);
+      if (theSpan.lastChild) {
+        theSpan.removeChild(theSpan.lastChild);
+      }
 
-		function standardDeviation(values) {
-			// get the mean then subtract all values from it + square values
-			var meanValues = computeAverage(values);
-			var standardDeviationValues = 0;
-			var x = 0;
-			
-			for (i = 0; i < values.length; i++) {
-				x = values[i].value - meanValues;
-				standardDeviationValues += Math.pow(x,2);
-			}
+      return theSpan;
+    }
 
-			var meanNewValues = standardDeviationValues/values.length;
+    //============================================
+    // 				 Computations
+    //============================================
 
-			return Math.sqrt(meanNewValues);
-		}
+    function computeSum(values) {
+      var sum = 0;
+      for (i = 0; i < values.length; i++) {
+        sum += +values[i].value;
+      }
+      return sum;
+    }
 
-		function computeSum(values) {
-			// Helper function to calculate the sum of values provided.
-			var sum = 0;
-			for (i = 0; i < values.length; i++) {
-				sum += +values[i].value;
-			}
-			return sum;
-		}
+    function computeProduct(theX, theY) {
+      return theX * theY;
+    }
 
-		function computeAverage(data) {
-			return computeSum(data)/data.length;
-		}
+    function computeAverage(data) {
+      return computeSum(data) / data.length;
+    }
 
-		function computeStatistics() {
+    function computeSumOfXY(valuesX, valuesY) {
 
-			var valuesY = document.getElementsByName("yvalue");
-			var valuesX = document.getElementsByName("xvalue");
-			var countSpan = document.getElementById("countOutput");
-			countSpan.appendChild(document.createTextNode(valuesX.length + valuesY.length));
-			countSpan.normalize();
+      var finalValue = 0;
 
-			var correlationSpan = removeChildForElement("correlationOutput");
-			// correlationSpan.appendChild(document.createTextNode(countSpan.length));
-			var sdValues =  standardDeviation(valuesX);
-			correlationSpan.appendChild(document.createTextNode(sdValues));
+      for (i = 0; i < valuesX.length; i++) {
+        finalValue += valuesX[i].value * valuesY[i].value;
+      }
 
-			var sumXvalues = computeSum(valuesX);
-			var sumYvalues = computeSum(valuesY);
-			var sumSpanX = removeChildForElement("sumOutputX");
-			sumSpanX.appendChild(document.createTextNode(sumXvalues));
+      return finalValue;
+    }
 
-			var sumSpanY = removeChildForElement("sumOutputY");
-			sumSpanY.appendChild(document.createTextNode(sumYvalues));
+    function computeSumOfValuesSquared(theValues) {
 
-			var averageSpanX = removeChildForElement("averageOutputX");
-			averageSpanX.appendChild(document.createTextNode(sumXvalues / valuesX.length));
+      var finalValue = 0;
 
-			var averageSpanY = removeChildForElement("averageOutputY");
-			averageSpanY.appendChild(document.createTextNode(sumYvalues / valuesY.length));
+      //part 1 - numerator
+      for (i = 0; i < theValues.length; i++) {
 
-		}
+        finalValue += Math.pow(theValues[i].value, 2);
+      }
 
-	</script>
+      return finalValue;
+    }
+
+    function computeCorrelation(valuesX, valuesY) {
+
+      var finalValue = 0;
+      var theCount = valuesX.length;
+
+      var sumXY = computeSumOfXY(valuesX, valuesY);
+      var sumYsquared = computeSumOfValuesSquared(valuesY);
+      var sumXsquared = computeSumOfValuesSquared(valuesX);
+      var sumX = computeSum(valuesX);
+      var sumY = computeSum(valuesY);
+
+      var numerator = theCount * (sumXY) - (sumX) * (sumY);
+      var denominator = Math.sqrt((theCount * sumXsquared) - Math.pow(sumX, 2)) * Math.sqrt((theCount * sumYsquared) - Math.pow(sumY, 2));
+
+
+      return numerator / denominator;
+    }
+
+    //============================================
+    // 				 Statistics Table
+    //============================================
+
+    function computeStatistics() {
+
+      var valuesY = document.getElementsByName("yvalue");
+      var valuesX = document.getElementsByName("xvalue");
+
+      var countSpan = removeChildForElement("countOutput");
+      countSpan.appendChild(document.createTextNode(valuesX.length));
+      countSpan.normalize();
+
+      //--------| Correlation |--------//
+      var correlationSpan = removeChildForElement("correlationOutput");
+      var sdValues = computeCorrelation(valuesX, valuesY);
+      correlationSpan.appendChild(document.createTextNode(sdValues));
+
+      //--------| Sum |--------//
+      var sumXvalues = computeSum(valuesX);
+      var sumYvalues = computeSum(valuesY);
+
+      var sumSpanX = removeChildForElement("sumOutputX");
+      sumSpanX.appendChild(document.createTextNode(sumXvalues));
+
+      var sumSpanY = removeChildForElement("sumOutputY");
+      sumSpanY.appendChild(document.createTextNode(sumYvalues));
+
+      //--------| Average |--------//
+      var averageSpanX = removeChildForElement("averageOutputX");
+      averageSpanX.appendChild(document.createTextNode(sumXvalues / valuesX.length));
+
+      var averageSpanY = removeChildForElement("averageOutputY");
+      averageSpanY.appendChild(document.createTextNode(sumYvalues / valuesY.length));
+
+    }
+  </script>
 </head>
 
 <body>
-	<div id="value-area">
-		<h2>Values</h2>
-		<!-- Left table - user enters values for X and Y and adds/removes rows -->
-		<table id="elementTable">
-			<thead>
-				<tr>
-					<th>Index</th>
-					<th>X Value</th>
-					<th>Y Value</th>
-				</tr>
-			</thead>
+  <div id="value-area">
+    <h2>Values</h2>
+    <!-- Left table - user enters values for X and Y and adds/removes rows -->
+    <table id="elementTable">
+      <thead>
+        <tr>
+          <th>Index</th>
+          <th>X Value</th>
+          <th>Y Value</th>
+        </tr>
+      </thead>
 
-			<tbody id="values">
-				<tr>
-					<td>1</td>
-					<td>
-						<input type="text" name="xvalue" />
-					</td>
-					<td>
-						<input type="text" name="yvalue" />
-					</td>
-				</tr>
-			</tbody>
-		</table>
-		<button id="addElement">Add Value</button>
-		<button id="removeElement">Remove Value</button>
-	</div>
-	<div id="stat-area">
-		<h2>Statistics</h2>
-		<!-- Left table - user enters values for X and Y and adds/removes rows -->
-		<table id="elementTable">
-			<tbody id="sum">
-				<tr>
-					<td>Sum</td>
-					<td>
-						<span id="sumOutputX"></span>
-					</td>
-					<td>
-						<span id="sumOutputY"></span>
-					</td>
-				</tr>
-				</tbody>
-				<tbody id="average">
+      <tbody id="values">
+        <tr>
+          <td>1</td>
+          <td>
+            <input type="text" name="xvalue" />
+          </td>
+          <td>
+            <input type="text" name="yvalue" />
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <button id="addElement">Add Value</button>
+    <button id="removeElement">Remove Value</button>
+  </div>
+  <div id="stat-area">
+    <h2>Statistics</h2>
+    <!-- Left table - user enters values for X and Y and adds/removes rows -->
+    <table id="elementTable">
+      <tbody id="sum">
+        <tr>
+          <td>Sum</td>
+          <td>
+            <span id="sumOutputX"></span>
+          </td>
+          <td>
+            <span id="sumOutputY"></span>
+          </td>
+        </tr>
+      </tbody>
+      <tbody id="average">
 
-				<tr>
-					<td>Average</td>
-					<td id="averageOutputX"></td>
-					<td id="averageOutputY"></td>
-				</tr>
-				</tbody>
-				<tbody id="correlation">
+        <tr>
+          <td>Average</td>
+          <td id="averageOutputX"></td>
+          <td id="averageOutputY"></td>
+        </tr>
+      </tbody>
+      <tbody id="correlation">
+        <tr>
+          <td>Correlation</td>
+          <td colspan="2" id="correlationOutput"></td>
+        </tr>
+      </tbody>
+      <tbody id="count">
 
-				<tr>
-					<td>Correlation</td>
+        <tr>
+          <td>Count</td>
+            <td colspan="2" id="countOutput"></td>
+        </tr>
+      </tbody>
 
-					<td colspan="2" id="correlationOutput"></td>
-					</tr>
-			</tbody>
-			<tbody id="count">
-
-			<tr>
-				<td>Count</td>
-				<td colspan="2" id="countOutput"></span>
-				</td>
-				</tr>
-			</tbody>
-
-		</table>
-		<button id="compute">Compute Statistics</button>
-	</div>
-	<script>
-		setup();
-	</script>
+    </table>
+    <button id="compute">Compute Statistics</button>
+  </div>
+  <script>
+    setup();
+  </script>
 </body>
 
 </html>
